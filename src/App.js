@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import List from './components/List'
-import $ from 'jquery';
+import axios from 'axios';
 import './App.css';
 
 class App extends Component {
@@ -9,10 +9,15 @@ class App extends Component {
     this.state = {courses: []}
   }
   componentDidMount(){
-    $.ajax('https://www.udacity.com/public-api/v0/courses')
-      .done(data => this.setState({ courses : data.courses}))
-      .error(error => console.log(error));
+    axios.get('https://www.udacity.com/public-api/v0/courses')
+      .then(response => this.setState({
+      	courses : response.data.courses
+      }))
+      .catch(function (error) {
+        console.log(error);
+      });
   };
+
   render() {
     return (
       <List courses={this.state.courses}/>
